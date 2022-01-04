@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
-import axios from 'axios'
 import Persons from './components/Persons'
 import PersonForm from './components/PersonForm'
+import Notification from './components/Notification'
 import SearchFilter from './components/SearchFilter'
 import personService from './services/persons'
 
@@ -12,6 +12,7 @@ const App = () => {
     number: ''
   })
   const [searchByName, setSearchByName] = useState('')
+  const [notification, setNotification] = useState(null)
 
   useEffect(() => {
     personService.getAll()
@@ -36,16 +37,13 @@ const App = () => {
               name: '',
               number: ''
             })
+            notify('Person number updated successfully!', 'success')
           }).catch(() => {
             console.log('Error while updating number')
+            notify('Error while updating number', 'error')
           })
       }
     } else {
-      // const personObject = {
-      //   name: newPerson.name,
-      //   number: newPerson.number
-      // }
-
       personService.create({...newPerson}).
         then(newlyAdded => {
           setPersons(persons.concat(newlyAdded))
@@ -53,15 +51,15 @@ const App = () => {
             name: '',
             number: ''
           })
+          notify('Person added successfully!', 'success')
         }).catch(() => {
           console.log('Error while saving new person')
+          notify('Error while saving new person', 'error')
         })
     }
-
   }
 
   const deletePerson = (id) => {
-
     const personToDelete = persons.find(p => p.id === id)
     const confirmation = window.confirm(`Delete ${personToDelete.name}`)
 
@@ -69,11 +67,20 @@ const App = () => {
       personService.remove(id)
         .then(response => {
           setPersons(persons.filter(p => p.id !== id))
+          notify('Person deleted successfully!', 'success')
         }).catch(() => {
           setPersons(persons.filter(p => p.id !== id))
           console.log('Error while deleting person')
+          notify('Error while deleting person', 'error')
         })
     }
+  }
+
+  const notify = (message, type='success') => {
+    setNotification({message, type})
+    setTimeout(() =>{
+      setNotification(null)
+    }, 5000)
   }
 
   const handleAddName = (event) => {
@@ -104,6 +111,8 @@ const App = () => {
     <div>
       <h1>Phonebook</h1>
       <SearchFilter searchByName={searchByName} handleNameFilter={handleNameFilter} />
+
+      <Notification notification={notification}/>
 
       <h2>Add a new</h2>
       <PersonForm newPerson={newPerson} addPerson={addPerson} handleAddName={handleAddName} handleAddNumber={handleAddNumber} />
