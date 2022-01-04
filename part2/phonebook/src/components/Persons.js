@@ -7,13 +7,13 @@ const filterByName = (person, searchByName) => {
     return (person.name.toLowerCase().search(searchByName.toLowerCase()) > -1)
 }
 
-const Persons = ({ persons, searchByName }) => {
+const Persons = ({ persons, searchByName, deletePerson }) => {
     return (
         <div>
             {
                 persons
                     .filter(person => filterByName(person, searchByName))
-                    .map(person => <PersonDetails key={!person.id ? person.name:person.id} person={person} />)
+                    .map(person => <PersonDetails key={!person.id ? person.name:person.id} person={person} deletePerson={deletePerson} />)
             }
         </div>
     )
