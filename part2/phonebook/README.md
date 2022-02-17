@@ -49,4 +49,5 @@ Open your application in two browsers. If you delete a person in browser 1 a sho
 
 # Exercises 3.19.-3.21.
 
-## Expand the frontend so that it displays some form of error message when a validation error occurs. Error handling can be implemented by adding a catch block 
+## 3.19*: Phonebook database, step7
+Expand the frontend so that it displays some form of error message when a validation error occurs. Error handling can be implemented by adding a catch block 
