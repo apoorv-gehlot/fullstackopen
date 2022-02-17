@@ -46,3 +46,7 @@ Use the improved error message example from part 2 as a guide to show a notifica
 
 ## 2.20*: Phonebook step12
 Open your application in two browsers. If you delete a person in browser 1 a short while before attempting to change the person's phone number in browser 2, you will get the following error message
+
+# Exercises 3.19.-3.21.
+
+## Expand the frontend so that it displays some form of error message when a validation error occurs. Error handling can be implemented by adding a catch block 

@@ -19,7 +19,7 @@ const App = () => {
       .then(data => {
         console.log(data)
         setPersons(data)
-      })
+      }).catch(error => notify(error, 'error'))
   }, [])
 
   const addPerson = (event) => {
@@ -30,31 +30,31 @@ const App = () => {
     if (existing) {
       const confirmation = window.confirm(`${existing.name} already in phonebook, replace the old number with new one?`)
       if (confirmation) {
-        personService.update(existing.id, { ...existing, number: newPerson.number }).
-          then(responsePerson => {
+        personService.update(existing.id, { ...existing, number: newPerson.number })
+          .then(responsePerson => {
             setPersons(persons.map(p => p.id !== existing.id ? p : responsePerson))
             setNewPerson({
               name: '',
               number: ''
             })
             notify('Person number updated successfully!', 'success')
-          }).catch(() => {
+          }).catch((error) => {
             console.log('Error while updating number')
-            notify('Error while updating number', 'error')
+            notify(error, 'error')
           })
       }
     } else {
-      personService.create({...newPerson}).
-        then(newlyAdded => {
+      personService.create({ ...newPerson })
+        .then(newlyAdded => {
           setPersons(persons.concat(newlyAdded))
           setNewPerson({
             name: '',
             number: ''
           })
           notify('Person added successfully!', 'success')
-        }).catch(() => {
+        }).catch((error) => {
           console.log('Error while saving new person')
-          notify('Error while saving new person', 'error')
+          notify(error, 'error')
         })
     }
   }
@@ -68,17 +68,17 @@ const App = () => {
         .then(response => {
           setPersons(persons.filter(p => p.id !== id))
           notify('Person deleted successfully!', 'success')
-        }).catch(() => {
+        }).catch((error) => {
           setPersons(persons.filter(p => p.id !== id))
           console.log('Error while deleting person')
-          notify('Error while deleting person', 'error')
+          notify(error, 'error')
         })
     }
   }
 
-  const notify = (message, type='success') => {
-    setNotification({message, type})
-    setTimeout(() =>{
+  const notify = (message, type = 'success') => {
+    setNotification({ message, type })
+    setTimeout(() => {
       setNotification(null)
     }, 5000)
   }
@@ -112,7 +112,7 @@ const App = () => {
       <h1>Phonebook</h1>
       <SearchFilter searchByName={searchByName} handleNameFilter={handleNameFilter} />
 
-      <Notification notification={notification}/>
+      <Notification notification={notification} />
 
       <h2>Add a new</h2>
       <PersonForm newPerson={newPerson} addPerson={addPerson} handleAddName={handleAddName} handleAddNumber={handleAddNumber} />
