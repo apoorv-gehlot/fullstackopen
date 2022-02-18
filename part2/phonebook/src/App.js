@@ -54,6 +54,7 @@ const App = () => {
           notify('Person added successfully!', 'success')
         }).catch((error) => {
           console.log('Error while saving new person')
+          console.log(error)
           notify(error, 'error')
         })
     }
